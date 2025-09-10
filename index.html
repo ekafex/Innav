@@ -112,9 +112,14 @@
       Plan: <code>data/floor.svg</code> · Images: <code>media/</code> · Graph: <code>data/graph.json</code> · Aliases: <code>data/aliases.json</code> · Optional audio clips: <code>audio/&lt;lang&gt;/&lt;file&gt;.mp3</code>
     </small>
   </footer>
-
-  <!-- <script src="app.js"></script> -->
   <script type="module" src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(console.warn);
+  });
+}
+</script>
 
 </body>
 </html>
