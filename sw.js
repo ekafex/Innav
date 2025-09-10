@@ -1,4 +1,4 @@
-const CACHE = "indoor-nav-v2";
+const CACHE = "indoor-nav-v3";
 const ASSETS = [
   "./",
   "./index.html",
@@ -32,18 +32,21 @@ self.addEventListener("fetch", (e) => {
   const { request } = e;
   const url = new URL(request.url);
 
-  // Cache-first for app shell & data; network-first for media/
-  const isAppAsset =
-    url.origin === location.origin &&
-    (url.pathname.endsWith(".html") ||
-     url.pathname.endsWith(".css") ||
-     url.pathname.endsWith(".js") ||
-     url.pathname.startsWith("/data/") ||
-     url.pathname.endsWith(".svg"));
+  // Only handle same-origin
+  if (url.origin !== location.origin) return;
 
-  const isMedia = url.origin === location.origin && url.pathname.startsWith("/media/");
+  // Use request.destination to classify:
+  // - cache-first for the "app shell" (document/script/style/json/svg)
+  // - network-first for big 360 images under /media/
+  const dest = request.destination; // 'document','script','style','image','audio','font','manifest',''
+  const isAppShell =
+    dest === "document" || dest === "script" || dest === "style" ||
+    dest === "manifest" ||
+    url.pathname.endsWith(".json") || url.pathname.endsWith(".svg");
 
-  if (isAppAsset) {
+  const isMedia = url.pathname.includes("/media/");
+
+  if (isAppShell) {
     e.respondWith((async () => {
       const cached = await caches.match(request);
       if (cached) return cached;
@@ -55,7 +58,7 @@ self.addEventListener("fetch", (e) => {
   } else if (isMedia) {
     e.respondWith((async () => {
       try {
-        const res = await fetch(request);
+        const res = await fetch(request, { cache: "no-store" });
         return res;
       } catch {
         const cached = await caches.match(request);
@@ -64,4 +67,3 @@ self.addEventListener("fetch", (e) => {
     })());
   }
 });
-
