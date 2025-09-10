@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Indoor Navigation – Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Panorama (lazy-loadable later if you wish) -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+  <style>
+    /* tiny helper styles for suggestions + permission sheet */
+    .suggest-box {
+      position:absolute; z-index:1000; background:#fff; border:1px solid #ddd; border-radius:10px;
+      box-shadow:0 10px 24px rgba(0,0,0,.15); max-height:40vh; overflow:auto; display:none;
+    }
+    .suggest-item { padding:8px 10px; cursor:pointer; }
+    .suggest-item:hover { background:#f6f8ff; }
+    .hud-card {
+      background:#fff; padding:8px 10px; border:1px solid #ddd; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.12);
+    }
+    @supports (height: 100dvh) {
+      main { height: calc(100dvh - 60px); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Indoor Navigation – Demo</h1>
+    <span class="muted">Map ⇄ Panorama, route overlay, PiP, draggable turn cue</span>
+  </header>
+
+  <main>
+    <section class="viewer" id="viewer">
+      <div id="mapLayer" class="layer">
+        <svg id="floorSvg" class="floor-svg" aria-label="Floor plan overlay"></svg>
+      </div>
+
+      <div id="panoLayer" class="layer hidden" aria-label="Panorama viewer">
+        <a-scene embedded background="color: #000" renderer="antialias: true">
+          <a-sky id="sky" radius="10"></a-sky>
+          <a-entity id="cameraRig" position="0 1.6 0">
+            <a-camera wasd-controls-enabled="false" look-controls="pointerLockEnabled: false"></a-camera>
+          </a-entity>
+        </a-scene>
+      </div>
+
+      <!-- Top HUD -->
+      <div class="hud">
+        <div class="row">
+          <div style="position:relative">
+            <input id="fromInput" placeholder="From…" list="nodeList" autocomplete="off" />
+            <div id="fromSuggest" class="suggest-box"></div>
+          </div>
+          <div style="position:relative">
+            <input id="toInput" placeholder="To…" list="nodeList" autocomplete="off" />
+            <div id="toSuggest" class="suggest-box"></div>
+          </div>
+          <datalist id="nodeList"></datalist>
+
+          <button id="routeBtn">Route</button>
+          <span id="stepInfo" class="muted"></span>
+          <div class="spacer"></div>
+          <button id="toggleViewBtn" class="secondary">Panorama</button>
+          <button id="voiceBtn" class="secondary" title="Toggle voice">Voice: Off</button>
+          <select id="voiceLang" class="mini" title="Clip language">
+            <option value="en" selected>EN</option>
+            <option value="sq">SQ</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Draggable BIG turn cue (default bottom-left) -->
+      <div id="bigNav" class="big-nav-float hidden" aria-live="polite">
+        <div id="bigNavIcon" class="big-nav-icon"></div>
+        <div class="big-nav-texts">
+          <div id="bigNavPrimary" class="big-nav-primary">Ready</div>
+          <div id="bigNavSecondary" class="big-nav-secondary muted"></div>
+        </div>
+      </div>
+
+      <!-- PiP -->
+      <div id="pip" class="pip hidden" aria-label="Mini map">
+        <div class="pip-bar">
+          <span class="pip-title">Mini-map</span>
+          <button id="pipHide" class="icon" title="Hide">×</button>
+        </div>
+        <canvas id="pipCanvas"></canvas>
+      </div>
+      <!-- Make the show button visible by default on mobile -->
+      <button id="pipShow" class="pip-show" title="Show mini-map">🗺️</button>
+
+      <!-- Live positioning sheet -->
+      <div id="permSheet" class="hud" style="top:auto; bottom:12px; left:12px; right:auto;">
+        <div class="hud-card row">
+          <strong>Live positioning</strong><span class="muted">&nbsp;(optional)</span>
+          <div class="spacer"></div>
+          <div style="display:flex; gap:8px; margin-top:6px;">
+            <button id="enableSensors" class="secondary">Enable</button>
+            <button id="disableSensors" class="secondary">Disable</button>
+            <button id="dismissSensors" class="secondary">Hide</button>
+          </div>
+          <div id="sensorStatus" class="muted" style="margin-top:6px; font-size:12px;">Status: idle</div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    <small>
+      Plan: <code>data/floor.svg</code> · Images: <code>media/</code> · Graph: <code>data/graph.json</code> · Aliases: <code>data/aliases.json</code> · Optional audio clips: <code>audio/&lt;lang&gt;/&lt;file&gt;.mp3</code>
+    </small>
+  </footer>
+
+  <!-- <script src="app.js"></script> -->
+  <script type="module" src="app.js"></script>
+
+</body>
+</html>
+

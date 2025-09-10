@@ -1,0 +1,18 @@
+{
+  "Hyrja": { "id": "N1", "synonyms": ["Dera Kryesore", "Hyrja Koridorit"] },
+  "Koridori": { "id": "N2", "synonyms": ["Mesi Koridorit", "Koridori Dhoma 1"] },
+  "Koridori Dhoma 2": { "id": "N3", "synonyms": ["Koridori Banjo", "Fundi Koridorit", "Koridori Dhoma Ndenjes"] },
+
+  "Dhoma Gjumit 1": "N4",
+  "Dhoma Gjumit 2": "N5",
+  "Banjo": "N6",
+  "Dhoma Brenda Banjos": "N7",
+  "Hyrja Dhoma Ndenjes": "N8",
+  "Dhoma Ndenjes": "N9",
+  "Vendi Ngrenies": "N10",
+  "Hyrja Kuzhine": "N11",
+  "Kuzhina": "N12",
+  "Hyrja Ballkonit": "N13",
+  "Ballkoni": "N14"
+}
+
