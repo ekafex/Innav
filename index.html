@@ -115,11 +115,16 @@
   </footer>
   <script type="module" src="app.js"></script>
 <script>
+  if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(console.error);
+}
+  /*
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(console.warn);
   });
 }
+*/
 </script>
 
 </body>
