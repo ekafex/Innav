@@ -1,9 +1,11 @@
 {
-  "name": "Indoor Navigation",
+  "name": "Indoor Navigation Demo",
   "short_name": "IndoorNav",
-  "start_url": "./index.html",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1a73e8"
 }
+
 
