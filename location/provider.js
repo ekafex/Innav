@@ -118,7 +118,7 @@ export class IndoorLocationProvider {
     */
     const screenAngle = (screen.orientation?.angle ?? window.orientation ?? 0) || 0;
     // tweak this once to match your map's "north" to device north:
-    const MAP_HEADING_OFFSET_DEG = 180;   // try 90, 180, or -90 if movement feels rotated
+    const MAP_HEADING_OFFSET_DEG = -90;   // try 90, 180, or -90 if movement feels rotated
 
     const corrected = alphaDeg - screenAngle + MAP_HEADING_OFFSET_DEG;
     const headingRad = compassDegToRad(corrected);
